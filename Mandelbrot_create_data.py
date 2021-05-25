@@ -9,56 +9,17 @@ Run all the different mandelbrots method and saves the values in a data folder
 
 # %% Imports
 from timeit import default_timer as timer
-import matplotlib.pyplot as plt
-
-import numpy as np
 
 import Mandelbrot_functions as mb
 
 from os import path, makedirs
 
-# %% plot
-
-
-def _plot(mfractal, lim, directory, title, res):
-    """
-    Plots the mandlbrot based on values from the different methods
-
-    Parameters
-    ----------
-    mfractal : matrix
-        matrix with values from the mandelbrot methods
-    lim : array
-        array with limits. [x_min, x_max, y_min, y_max].
-    directory : string
-        subfolder name inside the data folder. e.g. "naive"
-    title : string
-        title of files. e.g. "Mandelbrot_Naive"
-    res : int
-        the resolution
-
-    Returns
-    -------
-    None.
-
-    """
-    x_min, x_max, y_min, y_max = lim
-
-    # Make plot and save figure
-    plt.imshow(np.log(mfractal), cmap=plt.cm.hot,
-               extent=[x_min, x_max, y_min, y_max])
-    plt.title(f"{title}_{res}")
-    plt.xlabel('Re[c]')
-    plt.ylabel('Im[c]')
-    plt.savefig(f"data/{directory}/{title}_{res}.pdf",
-                bbox_inches='tight', pad_inches=0.05, dpi=300)
-    #plt.show()
-    plt.close()
+import h5py
 
 # %% save
 
 
-def _save(mfractal, t, directory, title, res):
+def _save(mfractal, z, t, directory, title, res):
     """
 
     Save the value into a numpy file (.npy)
@@ -81,10 +42,10 @@ def _save(mfractal, t, directory, title, res):
     None.
 
     """
-    f = open(f"data/{directory}/{title}_{res}.npy", "wb")
-    np.save(f, t)
-    np.save(f, mfractal)
-    f.close()
+    with h5py.File(f"data/{directory}/{title}_{res}.h5", 'w') as hf:
+        hf.create_dataset("time",  data=t)
+        hf.create_dataset("mfractal",  data=mfractal)
+        hf.create_dataset("z",  data=z)
 
 # %% run
 
@@ -122,7 +83,7 @@ def _run(directory, title, res):
 
 if __name__ == '__main__':
     # Number of processes
-    p = 8
+    P = [1, 2, 4, 8, 16]
 
     # Constants - Limits
     lim = [-2, 1, -1.5, 1.5]  # [x_min, x_max, y_min, y_max]
@@ -151,18 +112,15 @@ if __name__ == '__main__':
             t_start = timer()
 
             # calculate the fractals
-            mfractal = mb.naive(lim=lim, res_re=p_re, res_im=p_im,
-                                threshold=T, iterations=iterations)
+            mfractal, z = mb.naive(lim=lim, res_re=p_re, res_im=p_im,
+                                   threshold=T, iterations=iterations)
 
             # Stop timer
             t_stop = timer()
             t_total = t_stop - t_start
 
             # save data
-            _save(mfractal, t_total, folder, title, res)
-
-            # Plot
-            _plot(mfractal, lim, folder, title, res)
+            _save(mfractal, z, t_total, folder, title, res)
 
             print(f"Mandelbrot Naive took {t_total}s")
 
@@ -174,18 +132,15 @@ if __name__ == '__main__':
             t_start = timer()
 
             # calculate the fractals
-            mfractal = mb.numba(lim=lim, res_re=p_re, res_im=p_im,
-                                threshold=T, iterations=iterations)
+            mfractal, z = mb.numba(lim=lim, res_re=p_re, res_im=p_im,
+                                   threshold=T, iterations=iterations)
 
             # Stop timer
             t_stop = timer()
             t_total = t_stop - t_start
 
             # save data
-            _save(mfractal, t_total, folder, title, res)
-
-            # Plot
-            _plot(mfractal, lim, folder, title, res)
+            _save(mfractal, z, t_total, folder, title, res)
 
             print(f"Mandelbrot Numba took {t_total}s")
 
@@ -197,67 +152,61 @@ if __name__ == '__main__':
             t_start = timer()
 
             # calculate the fractals
-            mfractal = mb.numpy(lim=lim, res_re=p_re, res_im=p_im,
-                                threshold=T, iterations=iterations)
+            mfractal, z = mb.numpy(lim=lim, res_re=p_re, res_im=p_im,
+                                   threshold=T, iterations=iterations)
 
             # Stop timer
             t_stop = timer()
             t_total = t_stop - t_start
 
             # save data
-            _save(mfractal, t_total, folder, title, res)
-
-            # Plot
-            _plot(mfractal, lim, folder, title, res)
+            _save(mfractal, z, t_total, folder, title, res)
 
             print(f"Mandelbrot Numpy took {t_total}s")
 
         # ---- Multiprocessing ----
-        title = "Mandelbrot_Multiprocessing"
-        folder = "multiprocessing"
-        if _run(folder, title, res):
-            # Start timer
-            t_start = timer()
+        for p in P:
+            title = "Mandelbrot_Multiprocessing_{p}"
+            folder = "multiprocessing_{p}"
+            if _run(folder, title, res):
+                # Start timer
+                t_start = timer()
 
-            # calculate the fractals
-            mfractal = mb.multiprocessing(lim=lim, res_re=p_re, res_im=p_im,
-                                          threshold=T, iterations=iterations,
-                                          p=p)
+                # calculate the fractals
+                mfractal, z = mb.multiprocessing(lim=lim, res_re=p_re,
+                                                 res_im=p_im, threshold=T,
+                                                 iterations=iterations,
+                                                 p=p)
 
-            # Stop timer
-            t_stop = timer()
-            t_total = t_stop - t_start
+                # Stop timer
+                t_stop = timer()
+                t_total = t_stop - t_start
 
-            # save data
-            _save(mfractal, t_total, folder, title, res)
+                # save data
+                _save(mfractal, z, t_total, folder, title, res)
 
-            # Plot
-            _plot(mfractal, lim, folder, title, res)
-
-            print(f"Mandelbrot Multiprocessing took {t_total}s")
+                print(f"Mandelbrot Multiprocessing_{p} took {t_total}s")
 
         # ---- Dask ----
-        title = "Mandelbrot_Dask"
-        folder = "dask"
-        if _run(folder, title, res):
-            # Start timer
-            t_start = timer()
+        for p in P:
+            title = f"Mandelbrot_Dask_{p}"
+            folder = "dask_{p}"
+            if _run(folder, title, res):
+                # Start timer
+                t_start = timer()
 
-            # calculate the fractals
-            mfractal = mb.dask(lim=lim, res_re=p_re, res_im=p_im,
-                               threshold=T, iterations=iterations, p=p)
+                # calculate the fractals
+                mfractal, z = mb.dask(lim=lim, res_re=p_re, res_im=p_im,
+                                      threshold=T, iterations=iterations, p=p)
 
-            # Stop timer
-            t_stop = timer()
-            t_total = t_stop - t_start
+                # Stop timer
+                t_stop = timer()
+                t_total = t_stop - t_start
 
-            # save data
-            _save(mfractal, t_total, folder, title, res)
+                # save data
+                _save(mfractal, z, t_total, folder, title, res)
 
-            # Plot
-            _plot(mfractal, lim, folder, title, res)
-
-            print(f"Mandelbrot Dask took {t_total}s")
+                print(f"Mandelbrot Dask_{p} took {t_total}s")
 
         # ---- GPU ----
         title = "Mandelbrot_GPU"
@@ -267,18 +216,15 @@ if __name__ == '__main__':
             t_start = timer()
 
             # calculate the fractals
-            mfractal = mb.GPU(lim=lim, res_re=p_re, res_im=p_im,
-                              threshold=T, iterations=iterations)
+            mfractal, z = mb.GPU(lim=lim, res_re=p_re, res_im=p_im,
+                                 threshold=T, iterations=iterations)
 
             # Stop timer
             t_stop = timer()
             t_total = t_stop - t_start
 
             # save data
-            _save(mfractal, t_total, folder, title, res)
-
-            # Plot
-            _plot(mfractal, lim, folder, title, res)
+            _save(mfractal, z, t_total, folder, title, res)
 
             print(f"Mandelbrot GPU took {t_total}s")
 
@@ -290,18 +236,15 @@ if __name__ == '__main__':
             t_start = timer()
 
             # calculate the fractals
-            mfractal = mb.cython_naive(lim=lim, res_re=p_re, res_im=p_im,
-                                       threshold=T, iterations=iterations)
+            mfractal, z = mb.cython_naive(lim=lim, res_re=p_re, res_im=p_im,
+                                          threshold=T, iterations=iterations)
 
             # Stop timer
             t_stop = timer()
             t_total = t_stop - t_start
 
             # save data
-            _save(mfractal, t_total, folder, title, res)
-
-            # Plot
-            _plot(mfractal, lim, folder, title, res)
+            _save(mfractal, z, t_total, folder, title, res)
 
             print(f"Mandelbrot Cython naive took {t_total}s")
 
@@ -313,17 +256,14 @@ if __name__ == '__main__':
             t_start = timer()
 
             # calculate the fractals
-            mfractal = mb.cython_vector(lim=lim, res_re=p_re, res_im=p_im,
-                                        threshold=T, iterations=iterations)
+            mfractal, z = mb.cython_vector(lim=lim, res_re=p_re, res_im=p_im,
+                                           threshold=T, iterations=iterations)
 
             # Stop timer
             t_stop = timer()
             t_total = t_stop - t_start
 
             # save data
-            _save(mfractal, t_total, folder, title, res)
-
-            # Plot
-            _plot(mfractal, lim, folder, title, res)
+            _save(mfractal, z, t_total, folder, title, res)
 
             print(f"Mandelbrot Cython vector took {t_total}s")

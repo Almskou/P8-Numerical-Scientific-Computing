@@ -68,10 +68,13 @@ def _plot_time(t, res):
     # Colors
     colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple',
               'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan']
-
+    colors = ['Greys', 'Purples', 'Blues', 'Greens', 'Oranges', 'Reds',
+              'YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu',
+              'GnBu', 'PuBu', 'YlGnBu', 'PuBuGn', 'BuGn', 'YlGn']
     # Legends
-    legends = ['naive', 'numba', 'numpy', 'multiprocessing',
-               'dask', 'GPU', 'cython_naive', 'cython_vector']
+    legends = ['naive', 'numba', 'numpy', 'MP_1', 'MP_2', 'MP_4', 'MP_8',
+               'MP_16', 'dask_1', 'dask_2', 'dask_4', 'dask_8', 'dask_16',
+               'GPU', 'cython_naive', 'cython_vector']
 
     # Styles
     marker = '.'
@@ -128,35 +131,27 @@ def _plot_time(t, res):
 
 # %% Main
 if __name__ == '__main__':
-    # Number of processes
-    p = 8
-
-    # Constants - Limits
-    lim = [-2, 1, -1.5, 1.5]  # [x_min, x_max, y_min, y_max]
-
     # Constants - Resolution
     res = [100, 500, 1000, 2000, 5000]
 
-    # Constants - Threshold
-    T = 2
-
-    # Constants - Number of Iterations
-    iterations = 100
-
     # Load
     title = ["Mandelbrot_Naive", "Mandelbrot_Numba",
-             "Mandelbrot_Numpy", "Mandelbrot_Multiprocessing",
-             "Mandelbrot_Dask", "Mandelbrot_GPU",
+             "Mandelbrot_Numpy", "Mandelbrot_Multiprocessing_1",
+             "Mandelbrot_Multiprocessing_2", "Mandelbrot_Multiprocessing_4",
+             "Mandelbrot_Multiprocessing_8", "Mandelbrot_Multiprocessing_16",
+             "Mandelbrot_Dask_1", "Mandelbrot_Dask_2", "Mandelbrot_Dask_4",
+             "Mandelbrot_Dask_8", "Mandelbrot_Dask_16", "Mandelbrot_GPU",
              "Mandelbrot_Cython_naive", "Mandelbrot_Cython_vector"]
-    folder = ["naive", "numba", "numpy", "multiprocessing",
-              "dask", "GPU", "cython_naive", "cython_vector"]
+
+    folder = ["naive", "numba", "numpy", "multiprocessing_1",
+              "multiprocessing_2", "multiprocessing_4", "multiprocessing_8",
+              "multiprocessing_16", "dask_1", "dask_2", "dask_4",
+              "dask_8", "dask_16", "GPU", "cython_naive", "cython_vector"]
     t = []
     for j in range(len(title)):
         print(title[j])
         for i in range(len(res)):
-            print(i)
-            # assign res
-            p_re, p_im = [res[i], res[i]]
+            print(f"res: {res}")
 
             t_output, _ = _load(folder[j], title[j], res[i])
             if i == 0:

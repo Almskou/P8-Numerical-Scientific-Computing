@@ -12,8 +12,8 @@ or in console by running the command "pytest.main()"
 """
 
 # %% Imports
-import numpy as np
 import pytest
+import h5py
 
 
 # %% load
@@ -36,18 +36,26 @@ def _load(directory, title, res):
         the values from the method
 
     """
-    f = open(f"data/{directory}/{title}_{res}.npy", "rb")
-    t = np.load(f)
-    mfractal = np.load(f)
-    f.close()
+    with h5py.File(f"data/{directory}/{title}_{res}.h5", 'r') as hf:
+        t = hf['time'][()]
+        mfractal = hf['mfractal'][:]
+        z = hf['z'][:]
 
-    return t, mfractal
+    return t, mfractal, z
 
 
 @pytest.mark.parametrize("title, folder", [("Mandelbrot_Numba", "numba"),
                                            ("Mandelbrot_Numpy", "numpy"),
-                                           ("Mandelbrot_Multiprocessing",
-                                            "multiprocessing"),
+                                           ("Mandelbrot_Multiprocessing_1",
+                                            "multiprocessing_1"),
+                                           ("Mandelbrot_Multiprocessing_2",
+                                            "multiprocessing_2"),
+                                           ("Mandelbrot_Multiprocessing_4",
+                                            "multiprocessing_4"),
+                                           ("Mandelbrot_Multiprocessing_8",
+                                            "multiprocessing_8"),
+                                           ("Mandelbrot_Multiprocessing_16",
+                                            "multiprocessing_16"),
                                            ("Mandelbrot_Dask", "dask"),
                                            ("Mandelbrot_GPU", "GPU"),
                                            ("Mandelbrot_Cython_naive",
@@ -57,10 +65,12 @@ def _load(directory, title, res):
 @pytest.mark.parametrize("res", [100, 500, 1000, 2000, 5000])
 def test_mandelbrot_compare(title, folder, res):
     # Load naive
-    _, mfractal_naive = _load("naive", "Mandelbrot_Naive", res)
+    _, mfractal_naive, z_naive = _load("naive", "Mandelbrot_Naive", res)
 
     # Load other
-    _, mfractal_compare = _load(folder, title, res)
+    _, mfractal_compare, z_compare = _load(folder, title, res)
     # Check if they are equal
 
     assert (mfractal_naive == mfractal_compare).all()
+
+    assert (z_naive == z_compare).all()
