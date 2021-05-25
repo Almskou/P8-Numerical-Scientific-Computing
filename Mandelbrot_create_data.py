@@ -22,7 +22,7 @@ import h5py
 def _save(mfractal, z, t, directory, title, res):
     """
 
-    Save the value into a numpy file (.npy)
+    Save the value into a .hdf5 file
 
     Parameters
     ----------
@@ -42,7 +42,7 @@ def _save(mfractal, z, t, directory, title, res):
     None.
 
     """
-    with h5py.File(f"data/{directory}/{title}_{res}.h5", 'w') as hf:
+    with h5py.File(f"data/{directory}/{title}_{res}.hdf5", 'w') as hf:
         hf.create_dataset("time",  data=t)
         hf.create_dataset("mfractal",  data=mfractal)
         hf.create_dataset("z",  data=z)
@@ -73,7 +73,7 @@ def _run(directory, title, res):
     if not path.isdir(f"data/{directory}"):
         makedirs(f"data/{directory}")
 
-    if path.isfile(f"data/{directory}/{title}_{res}.npy"):
+    if path.isfile(f"data/{directory}/{title}_{res}.h5"):
         return False
     else:
         return True
@@ -166,8 +166,8 @@ if __name__ == '__main__':
 
         # ---- Multiprocessing ----
         for p in P:
-            title = "Mandelbrot_Multiprocessing_{p}"
-            folder = "multiprocessing_{p}"
+            title = f"Mandelbrot_Multiprocessing_{p}"
+            folder = f"multiprocessing_{p}"
             if _run(folder, title, res):
                 # Start timer
                 t_start = timer()
@@ -190,7 +190,7 @@ if __name__ == '__main__':
         # ---- Dask ----
         for p in P:
             title = f"Mandelbrot_Dask_{p}"
-            folder = "dask_{p}"
+            folder = f"dask_{p}"
             if _run(folder, title, res):
                 # Start timer
                 t_start = timer()

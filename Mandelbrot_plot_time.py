@@ -10,7 +10,7 @@ Loads all the created files and plot the time plot
 # %% Imports
 import matplotlib.pyplot as plt
 
-import numpy as np
+import h5py
 
 from os import path, makedirs
 
@@ -36,12 +36,12 @@ def _load(directory, title, res):
         the values from the method
 
     """
-    f = open(f"data/{directory}/{title}_{res}.npy", "rb")
-    t = np.load(f)
-    mfractal = np.load(f)
-    f.close()
+    with h5py.File(f"data/{directory}/{title}_{res}.hdf5", 'r') as hf:
+        t = hf['time'][()]
+        mfractal = hf['mfractal'][:]
+        z = hf['z'][:]
 
-    return t, mfractal
+    return t, mfractal, z
 
 # %% plot
 
@@ -67,14 +67,18 @@ def _plot_time(t, res):
 
     # Colors
     colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple',
-              'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan']
-    colors = ['Greys', 'Purples', 'Blues', 'Greens', 'Oranges', 'Reds',
-              'YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu',
-              'GnBu', 'PuBu', 'YlGnBu', 'PuBuGn', 'BuGn', 'YlGn']
+              'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan',
+              'limegreen', 'goldenrod', 'k', 'b', 'fuchsia', 'yellow']
     # Legends
     legends = ['naive', 'numba', 'numpy', 'MP_1', 'MP_2', 'MP_4', 'MP_8',
                'MP_16', 'dask_1', 'dask_2', 'dask_4', 'dask_8', 'dask_16',
                'GPU', 'cython_naive', 'cython_vector']
+
+    # Index for different sets
+    MP = [3, 4, 5, 6, 7]
+    DA = [8, 9, 10, 11, 12]
+    AL = [0, 1, 2, 6, 11, 13, 14, 15]
+    FA = [1, 2, 6, 11, 13, 15]
 
     # Styles
     marker = '.'
@@ -85,7 +89,7 @@ def _plot_time(t, res):
     grid_alpha = 0.3
 
     # Plot all
-    for i in range(len(t)):
+    for i in AL:
         plt.plot(res, t[i][:], color=colors[i], label=legends[i],
                  marker=marker, linestyle=linestyle)
 
@@ -98,11 +102,37 @@ def _plot_time(t, res):
     plt.savefig("data/time/all.pdf", bbox_inches='tight', pad_inches=0.05)
     plt.close()
 
+    # Plot multiprocessing
+    for i in MP:
+        plt.plot(res, t[i][:], color=colors[i], label=legends[i],
+                 marker=marker, linestyle=linestyle)
+
+    plt.title(f"{title}_{res}")
+    plt.xlabel('resolution')
+    plt.ylabel('time [s]')
+    plt.legend()
+    plt.title("")
+    plt.grid(linewidth=grid_linewidth, alpha=grid_alpha)
+    plt.savefig("data/time/MP.pdf", bbox_inches='tight', pad_inches=0.05)
+    plt.close()
+
+    # Plot dask
+    for i in DA:
+        plt.plot(res, t[i][:], color=colors[i], label=legends[i],
+                 marker=marker, linestyle=linestyle)
+
+    plt.title(f"{title}_{res}")
+    plt.xlabel('resolution')
+    plt.ylabel('time [s]')
+    plt.legend()
+    plt.title("")
+    plt.grid(linewidth=grid_linewidth, alpha=grid_alpha)
+    plt.savefig("data/time/DA.pdf", bbox_inches='tight', pad_inches=0.05)
+    plt.close()
     # Plot the fast ones
-    for i in range(len(t)):
-        if np.max(t[i][:]) < 400:
-            plt.plot(res, t[i][:], color=colors[i], label=legends[i],
-                     marker=marker, linestyle=linestyle)
+    for i in FA:
+        plt.plot(res, t[i][:], color=colors[i], label=legends[i],
+                 marker=marker, linestyle=linestyle)
 
     plt.title(f"{title}_{res}")
     plt.xlabel('resolution')
@@ -114,7 +144,7 @@ def _plot_time(t, res):
     plt.close()
 
     # Plot log
-    for i in range(len(t)):
+    for i in AL:
         plt.plot(res, t[i][:], color=colors[i], label=legends[i],
                  marker=marker, linestyle=linestyle)
 
@@ -151,9 +181,9 @@ if __name__ == '__main__':
     for j in range(len(title)):
         print(title[j])
         for i in range(len(res)):
-            print(f"res: {res}")
+            print(f"res: {res[i]}")
 
-            t_output, _ = _load(folder[j], title[j], res[i])
+            t_output, _, _ = _load(folder[j], title[j], res[i])
             if i == 0:
                 t.append([t_output])
             else:

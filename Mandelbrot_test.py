@@ -36,7 +36,7 @@ def _load(directory, title, res):
         the values from the method
 
     """
-    with h5py.File(f"data/{directory}/{title}_{res}.h5", 'r') as hf:
+    with h5py.File(f"data/{directory}/{title}_{res}.hdf5", 'r') as hf:
         t = hf['time'][()]
         mfractal = hf['mfractal'][:]
         z = hf['z'][:]
@@ -56,7 +56,11 @@ def _load(directory, title, res):
                                             "multiprocessing_8"),
                                            ("Mandelbrot_Multiprocessing_16",
                                             "multiprocessing_16"),
-                                           ("Mandelbrot_Dask", "dask"),
+                                           ("Mandelbrot_Dask_1", "dask_1"),
+                                           ("Mandelbrot_Dask_2", "dask_2"),
+                                           ("Mandelbrot_Dask_4", "dask_4"),
+                                           ("Mandelbrot_Dask_8", "dask_8"),
+                                           ("Mandelbrot_Dask_16", "dask_16"),
                                            ("Mandelbrot_GPU", "GPU"),
                                            ("Mandelbrot_Cython_naive",
                                             "cython_naive"),

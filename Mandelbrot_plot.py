@@ -36,7 +36,7 @@ def _load(directory, title, res):
         the values from the method
 
     """
-    with h5py.File(f"data/{directory}/{title}_{res}.h5", 'r') as hf:
+    with h5py.File(f"data/{directory}/{title}_{res}.hdf5", 'r') as hf:
         t = hf['time'][()]
         mfractal = hf['mfractal'][:]
         z = hf['z'][:]

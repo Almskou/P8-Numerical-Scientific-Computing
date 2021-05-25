@@ -14,7 +14,7 @@ import numpy as np
 from functools import partial
 import multiprocessing as mp
 
-from dask.distributed import Client
+from dask.distributed import Client, wait
 
 import pyopencl as cl
 
@@ -238,9 +238,7 @@ def dask(lim, res_re, res_im, threshold, iterations, p):
     mfractal = np.zeros(c.shape, dtype=np.float)
     z = np.zeros(c.shape, dtype=np.complex)
 
-    # Start the client with p workers
     client = Client(n_workers=p)
-
     # Take the _mpoint function and specify the two constants
     _mpoint_p = partial(_mpoint_numpy, T=threshold, Iter=iterations)
 
@@ -252,7 +250,6 @@ def dask(lim, res_re, res_im, threshold, iterations, p):
     results = client.gather(futures)
 
     client.close()
-
     # Split the resutls into z and mfractals
     z = [results[i][1] for i in range(len(x))]
     mfractal = [results[i][0] for i in range(len(x))]
@@ -410,7 +407,7 @@ def _mpoint_numpy(c, T, Iter):
     z = np.zeros(c.shape, dtype=complex)
     Iota = np.full(z.shape, Iter)
 
-    for i in range(1, Iter+1):
+    for i in range(1, Iter):
         # Only calculated for the ones which hasn't diverged
         z[Iota > (i-1)] = np.square(z[Iota > (i-1)]) \
             + c[Iota > (i-1)]
@@ -526,17 +523,15 @@ def _mpoint_opencl(c, T=2, Iter=100):
 
             cdouble_t z = cdouble_new(0,0);
 
-
-            int i = 0;
-            while(i < I & cdouble_abs(z) <= T)
-            {
-                z = cdouble_mul(z,z);
-                z = cdouble_add(z, c[idy*dim + idx]);
-                i = i + 1;
-
-            }
-              out_z[idy*dim + idx] = z;
-              out_m[idy*dim + idx] = i;
+        int i = 0;
+        while(i < I & cdouble_abs(z) <= T)
+        {
+            z = cdouble_mul(z,z);
+            z = cdouble_add(z,c[idy*dim + idx]);
+            i = i + 1;
+        }
+            out_z[idy*dim + idx] = z;
+            out_m[idy*dim + idx] = i;
         }
         """,
         ).build()

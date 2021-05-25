@@ -3,5 +3,6 @@
 # Folders
 __pycache__
 dask-worker-space
-data
+*?5000.hdf5
+*.h5
 build
