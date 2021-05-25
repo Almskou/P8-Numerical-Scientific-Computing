@@ -3,7 +3,7 @@ Mini project for the course Numerical Scientific Computing
 
 Functions which are going to be compiled to c
 
-@author: Nicolai Almskou
+@author: 871
 """
 
 import numpy as np
