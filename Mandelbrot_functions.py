@@ -2,12 +2,12 @@
 """
 Mini project for the course Numerical Scientific Computing
 
-All the different mandlebrot functions
+All the different mandelbrot functions
 
 @author: 871
 """
 # %% Imports
-import Mandlebrot_cython
+import Mandelbrot_cython
 
 import numpy as np
 
@@ -20,7 +20,7 @@ import pyopencl as cl
 
 from numba import jit
 
-# %% Mandlebrot Naive
+# %% Mandelbrot Naive
 
 
 def naive(lim, res_re, res_im, threshold, iterations):
@@ -36,14 +36,14 @@ def naive(lim, res_re, res_im, threshold, iterations):
     res_im : int
         the resolution for imaginary part
     threshold : int
-        threshold for the mandlebrot function.
+        threshold for the mandelbrot function.
     iterations : int
         max number of iterations.
 
     Returns
     -------
     mfractal : matrix
-        A matrix with the mandlebrot values (number iterations).
+        A matrix with the mandelbrot values (number iterations).
 
     """
     x_min, x_max, y_min, y_max = lim
@@ -60,7 +60,7 @@ def naive(lim, res_re, res_im, threshold, iterations):
 
     return mfractal
 
-# %% Mandlebrot Numpy
+# %% Mandelbrot Numpy
 
 
 def numpy(lim, res_re, res_im, threshold, iterations):
@@ -76,14 +76,14 @@ def numpy(lim, res_re, res_im, threshold, iterations):
     res_im : int
         the resolution for imaginary part
     threshold : int
-        threshold for the mandlebrot function.
+        threshold for the mandelbrot function.
     iterations : int
         max number of iterations.
 
     Returns
     -------
     mfractal : matrix
-        A matrix with the mandlebrot values (number iterations).
+        A matrix with the mandelbrot values (number iterations).
 
     """
     x_min, x_max, y_min, y_max = lim
@@ -99,7 +99,7 @@ def numpy(lim, res_re, res_im, threshold, iterations):
 
     return mfractal
 
-# %% Mandlebrot Numba
+# %% Mandelbrot Numba
 
 
 def numba(lim, res_re, res_im, threshold, iterations):
@@ -115,14 +115,14 @@ def numba(lim, res_re, res_im, threshold, iterations):
     res_im : int
         the resolution for imaginary part
     threshold : int
-        threshold for the mandlebrot function.
+        threshold for the mandelbrot function.
     iterations : int
         max number of iterations.
 
     Returns
     -------
     mfractal : matrix
-        A matrix with the mandlebrot values (number iterations).
+        A matrix with the mandelbrot values (number iterations).
 
     """
     x_min, x_max, y_min, y_max = lim
@@ -140,7 +140,7 @@ def numba(lim, res_re, res_im, threshold, iterations):
     return mfractal
 
 
-# %% Mandlebrot Multiprocessing
+# %% Mandelbrot Multiprocessing
 
 
 def multiprocessing(lim, res_re, res_im, threshold, iterations, p):
@@ -156,7 +156,7 @@ def multiprocessing(lim, res_re, res_im, threshold, iterations, p):
     res_im : int
         the resolution for imaginary part
     threshold : int
-        threshold for the mandlebrot function.
+        threshold for the mandelbrot function.
     iterations : int
         max number of iterations.
     p : int
@@ -165,7 +165,7 @@ def multiprocessing(lim, res_re, res_im, threshold, iterations, p):
     Returns
     -------
     result : matrix
-        A matrix with the mandlebrot values (number iterations).
+        A matrix with the mandelbrot values (number iterations).
 
     """
     x_min, x_max, y_min, y_max = lim
@@ -186,7 +186,7 @@ def multiprocessing(lim, res_re, res_im, threshold, iterations, p):
     return result
 
 
-# %% Mandlebrot Dask
+# %% Mandelbrot Dask
 
 
 def dask(lim, res_re, res_im, threshold, iterations, p):
@@ -202,7 +202,7 @@ def dask(lim, res_re, res_im, threshold, iterations, p):
     res_im : int
         the resolution for imaginary part
     threshold : int
-        threshold for the mandlebrot function.
+        threshold for the mandelbrot function.
     iterations : int
         max number of iterations.
     p : int
@@ -211,7 +211,7 @@ def dask(lim, res_re, res_im, threshold, iterations, p):
     Returns
     -------
     mfractal : matrix
-        A matrix with the mandlebrot values (number iterations).
+        A matrix with the mandelbrot values (number iterations).
 
     """
     x_min, x_max, y_min, y_max = lim
@@ -241,7 +241,7 @@ def dask(lim, res_re, res_im, threshold, iterations, p):
 
     return mfractal
 
-# %% Mandlebrot GPU
+# %% Mandelbrot GPU
 
 
 def GPU(lim, res_re, res_im, threshold, iterations):
@@ -257,14 +257,14 @@ def GPU(lim, res_re, res_im, threshold, iterations):
     res_im : int
         the resolution for imaginary part
     threshold : int
-        threshold for the mandlebrot function.
+        threshold for the mandelbrot function.
     iterations : int
         max number of iterations.
 
     Returns
     -------
     mfractal : matrix
-        A matrix with the mandlebrot values (number iterations).
+        A matrix with the mandelbrot values (number iterations).
 
     """
     x_min, x_max, y_min, y_max = lim
@@ -281,7 +281,7 @@ def GPU(lim, res_re, res_im, threshold, iterations):
 
     return mfractal
 
-# %% Mandlebrot Cython
+# %% Mandelbrot Cython
 
 
 def cython_vector(lim, res_re, res_im, threshold, iterations):
@@ -297,14 +297,14 @@ def cython_vector(lim, res_re, res_im, threshold, iterations):
     res_im : int
         the resolution for imaginary part
     threshold : int
-        threshold for the mandlebrot function.
+        threshold for the mandelbrot function.
     iterations : int
         max number of iterations.
 
     Returns
     -------
     mfractal : matrix
-        A matrix with the mandlebrot values (number iterations).
+        A matrix with the mandelbrot values (number iterations).
 
     """
     x_min, x_max, y_min, y_max = lim
@@ -317,7 +317,7 @@ def cython_vector(lim, res_re, res_im, threshold, iterations):
     # Compute the Mandelbrot fractal
     mfractal = np.zeros([res_re, res_im], dtype=np.float64)
 
-    mfractal = Mandlebrot_cython.vector(c, threshold, iterations)
+    mfractal = Mandelbrot_cython.vector(c, threshold, iterations)
 
     return mfractal
 
@@ -335,14 +335,14 @@ def cython_naive(lim, res_re, res_im, threshold, iterations):
     res_im : int
         the resolution for imaginary part
     threshold : int
-        threshold for the mandlebrot function.
+        threshold for the mandelbrot function.
     iterations : int
         max number of iterations.
 
     Returns
     -------
     mfractal : matrix
-        A matrix with the mandlebrot values (number iterations).
+        A matrix with the mandelbrot values (number iterations).
 
     """
     x_min, x_max, y_min, y_max = lim
@@ -356,7 +356,7 @@ def cython_naive(lim, res_re, res_im, threshold, iterations):
     mfractal = np.zeros(c.shape, dtype=np.float)
     for ix in range(mfractal.shape[0]):
         for iy in range(mfractal.shape[1]):
-            mfractal[ix, iy] = Mandlebrot_cython.naive(c[ix, iy],
+            mfractal[ix, iy] = Mandelbrot_cython.naive(c[ix, iy],
                                                        threshold, iterations)
 
     return mfractal

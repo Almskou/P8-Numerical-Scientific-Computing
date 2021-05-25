@@ -22,7 +22,7 @@ def _load(directory, title, res):
     directory : string
         subfolder name inside the data folder. e.g. "naive"
     title : string
-        title of files. e.g. "Mandlebrot_Naive"
+        title of files. e.g. "Mandelbrot_Naive"
     res : int
         the resolution
 
@@ -52,13 +52,13 @@ def _plot(mfractal, lim, directory, title, res):
     Parameters
     ----------
     mfractal : matrix
-        matrix with values from the mandlebrot methods
+        matrix with values from the mandelbrot methods
     lim : array
         array with limits. [x_min, x_max, y_min, y_max].
     directory : string
         subfolder name inside the data folder. e.g. "naive"
     title : string
-        title of files. e.g. "Mandlebrot_Naive"
+        title of files. e.g. "Mandelbrot_Naive"
     res : int
         the resolution
 
@@ -99,10 +99,10 @@ if __name__ == '__main__':
     iterations = 100
 
     # Load
-    title = ["Mandlebrot_Naive", "Mandlebrot_Numba",
-             "Mandlebrot_Numpy", "Mandlebrot_Multiprocessing",
-             "Mandlebrot_Dask", "Mandlebrot_GPU",
-             "Mandlebrot_Cython_naive", "Mandlebrot_Cython_vector"]
+    title = ["Mandelbrot_Naive", "Mandelbrot_Numba",
+             "Mandelbrot_Numpy", "Mandelbrot_Multiprocessing",
+             "Mandelbrot_Dask", "Mandelbrot_GPU",
+             "Mandelbrot_Cython_naive", "Mandelbrot_Cython_vector"]
 
     folder = ["naive", "numba", "numpy", "multiprocessing",
               "dask", "GPU", "cython_naive", "cython_vector"]

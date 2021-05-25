@@ -2,7 +2,7 @@
 """
 Mini project for the course Numerical Scientific Computing
 
-Test to see if mandlebrots created with different methods is
+Test to see if mandelbrots created with different methods is
 equal to the naive version
 
 Can be run by a termial by: "python -m python [dir to file]"
@@ -24,7 +24,7 @@ def _load(directory, title, res):
     directory : string
         subfolder name inside the data folder. e.g. "naive"
     title : string
-        title of files. e.g. "Mandlebrot_Naive"
+        title of files. e.g. "Mandelbrot_Naive"
     res : int
         the resolution.
 
@@ -44,20 +44,20 @@ def _load(directory, title, res):
     return t, mfractal
 
 
-@pytest.mark.parametrize("title, folder", [("Mandlebrot_Numba", "numba"),
-                                           ("Mandlebrot_Numpy", "numpy"),
-                                           ("Mandlebrot_Multiprocessing",
+@pytest.mark.parametrize("title, folder", [("Mandelbrot_Numba", "numba"),
+                                           ("Mandelbrot_Numpy", "numpy"),
+                                           ("Mandelbrot_Multiprocessing",
                                             "multiprocessing"),
-                                           ("Mandlebrot_Dask", "dask"),
-                                           ("Mandlebrot_GPU", "GPU"),
-                                           ("Mandlebrot_Cython_naive",
+                                           ("Mandelbrot_Dask", "dask"),
+                                           ("Mandelbrot_GPU", "GPU"),
+                                           ("Mandelbrot_Cython_naive",
                                             "cython_naive"),
-                                           ("Mandlebrot_Cython_vector",
+                                           ("Mandelbrot_Cython_vector",
                                             "cython_vector")])
 @pytest.mark.parametrize("res", [100, 500, 1000, 2000, 5000])
-def test_mandlebrot_compare(title, folder, res):
+def test_mandelbrot_compare(title, folder, res):
     # Load naive
-    _, mfractal_naive = _load("naive", "Mandlebrot_Naive", res)
+    _, mfractal_naive = _load("naive", "Mandelbrot_Naive", res)
 
     # Load other
     _, mfractal_compare = _load(folder, title, res)

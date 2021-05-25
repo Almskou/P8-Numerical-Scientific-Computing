@@ -2,7 +2,7 @@
 """
 Mini project for the course Numerical Scientific Computing
 
-Run all the different mandlebrots method and saves the values in a data folder
+Run all the different mandelbrots method and saves the values in a data folder
 
 @author: 871
 """
@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-import Mandlebrot_functions as mb
+import Mandelbrot_functions as mb
 
 from os import path, makedirs
 
@@ -27,13 +27,13 @@ def _plot(mfractal, lim, directory, title, res):
     Parameters
     ----------
     mfractal : matrix
-        matrix with values from the mandlebrot methods
+        matrix with values from the mandelbrot methods
     lim : array
         array with limits. [x_min, x_max, y_min, y_max].
     directory : string
         subfolder name inside the data folder. e.g. "naive"
     title : string
-        title of files. e.g. "Mandlebrot_Naive"
+        title of files. e.g. "Mandelbrot_Naive"
     res : int
         the resolution
 
@@ -66,13 +66,13 @@ def _save(mfractal, t, directory, title, res):
     Parameters
     ----------
     mfractal : matrix
-        matrix with values from the mandlebrot methods
+        matrix with values from the mandelbrot methods
     t : float
         time it took to run the method
     directory : string
         subfolder name inside the data folder. e.g. "naive"
     title : string
-        title of files. e.g. "Mandlebrot_Naive"
+        title of files. e.g. "Mandelbrot_Naive"
     res : int
         the resolution.
 
@@ -99,7 +99,7 @@ def _run(directory, title, res):
     directory : string
         subfolder name inside the data folder. e.g. "naive"
     title : string
-        title of files. e.g. "Mandlebrot_Naive"
+        title of files. e.g. "Mandelbrot_Naive"
     res : int
         the resolution.
 
@@ -144,7 +144,7 @@ if __name__ == '__main__':
         print(f"res: {res}")
 
         # ---- Naive ----
-        title = "Mandlebrot_Naive"
+        title = "Mandelbrot_Naive"
         folder = "naive"
         if _run(folder, title, res):
             # Start timer
@@ -164,10 +164,10 @@ if __name__ == '__main__':
             # Plot
             _plot(mfractal, lim, folder, title, res)
 
-            print(f"Mandlebrot Naive took {t_total}s")
+            print(f"Mandelbrot Naive took {t_total}s")
 
         # ---- Numba ----
-        title = "Mandlebrot_Numba"
+        title = "Mandelbrot_Numba"
         folder = "numba"
         if _run(folder, title, res):
             # Start timer
@@ -187,10 +187,10 @@ if __name__ == '__main__':
             # Plot
             _plot(mfractal, lim, folder, title, res)
 
-            print(f"Mandlebrot Numba took {t_total}s")
+            print(f"Mandelbrot Numba took {t_total}s")
 
         # ---- Numpy ----
-        title = "Mandlebrot_Numpy"
+        title = "Mandelbrot_Numpy"
         folder = "numpy"
         if _run(folder, title, res):
             # Start timer
@@ -210,10 +210,10 @@ if __name__ == '__main__':
             # Plot
             _plot(mfractal, lim, folder, title, res)
 
-            print(f"Mandlebrot Numpy took {t_total}s")
+            print(f"Mandelbrot Numpy took {t_total}s")
 
         # ---- Multiprocessing ----
-        title = "Mandlebrot_Multiprocessing"
+        title = "Mandelbrot_Multiprocessing"
         folder = "multiprocessing"
         if _run(folder, title, res):
             # Start timer
@@ -234,10 +234,10 @@ if __name__ == '__main__':
             # Plot
             _plot(mfractal, lim, folder, title, res)
 
-            print(f"Mandlebrot Multiprocessing took {t_total}s")
+            print(f"Mandelbrot Multiprocessing took {t_total}s")
 
         # ---- Dask ----
-        title = "Mandlebrot_Dask"
+        title = "Mandelbrot_Dask"
         folder = "dask"
         if _run(folder, title, res):
             # Start timer
@@ -257,10 +257,10 @@ if __name__ == '__main__':
             # Plot
             _plot(mfractal, lim, folder, title, res)
 
-            print(f"Mandlebrot Dask took {t_total}s")
+            print(f"Mandelbrot Dask took {t_total}s")
 
         # ---- GPU ----
-        title = "Mandlebrot_GPU"
+        title = "Mandelbrot_GPU"
         folder = "GPU"
         if _run(folder, title, res):
             # Start timer
@@ -280,10 +280,10 @@ if __name__ == '__main__':
             # Plot
             _plot(mfractal, lim, folder, title, res)
 
-            print(f"Mandlebrot GPU took {t_total}s")
+            print(f"Mandelbrot GPU took {t_total}s")
 
         # ---- Cython - naive ----
-        title = "Mandlebrot_Cython_naive"
+        title = "Mandelbrot_Cython_naive"
         folder = "cython_naive"
         if _run(folder, title, res):
             # Start timer
@@ -303,10 +303,10 @@ if __name__ == '__main__':
             # Plot
             _plot(mfractal, lim, folder, title, res)
 
-            print(f"Mandlebrot Cython naive took {t_total}s")
+            print(f"Mandelbrot Cython naive took {t_total}s")
 
         # ---- Cython - vector ----
-        title = "Mandlebrot_Cython_vector"
+        title = "Mandelbrot_Cython_vector"
         folder = "cython_vector"
         if _run(folder, title, res):
             # Start timer
@@ -326,4 +326,4 @@ if __name__ == '__main__':
             # Plot
             _plot(mfractal, lim, folder, title, res)
 
-            print(f"Mandlebrot Cython vector took {t_total}s")
+            print(f"Mandelbrot Cython vector took {t_total}s")
