@@ -52,7 +52,7 @@ def _plot(mfractal, lim, directory, title, res):
     plt.ylabel('Im[c]')
     plt.savefig(f"data/{directory}/{title}_{res}.pdf",
                 bbox_inches='tight', pad_inches=0.05, dpi=300)
-    plt.show()
+    #plt.show()
     plt.close()
 
 # %% save

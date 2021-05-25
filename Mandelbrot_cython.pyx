@@ -17,9 +17,9 @@ def naive(complex c, int T, int I):
         z = z**2 + c
         
         if np.abs(z) > T:
-            return i
+            return i, z
         
-    return 100
+    return 100,z
 
 
 def vector(c, int T, int I):  
@@ -31,4 +31,4 @@ def vector(c, int T, int I):
         
         Iota[np.logical_and(np.abs(z) > T, Iota == I)] = i # Write iteration number to the matrix 
 
-    return Iota
+    return Iota, z
