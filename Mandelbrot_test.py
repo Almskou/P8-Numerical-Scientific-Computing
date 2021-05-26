@@ -67,7 +67,7 @@ def _load(directory, title, res):
                                            ("Mandelbrot_Cython_vector",
                                             "cython_vector")])
 @pytest.mark.parametrize("res", [100, 500, 1000, 2000, 5000])
-def test_mandelbrot_compare(title, folder, res):
+def test_mandelbrot_mfractal_compare(title, folder, res):
     # Load naive
     _, mfractal_naive, z_naive = _load("naive", "Mandelbrot_Naive", res)
 
@@ -77,4 +77,36 @@ def test_mandelbrot_compare(title, folder, res):
 
     assert (mfractal_naive == mfractal_compare).all()
 
+
+@pytest.mark.parametrize("title, folder", [("Mandelbrot_Numba", "numba"),
+                                           ("Mandelbrot_Numpy", "numpy"),
+                                           ("Mandelbrot_Multiprocessing_1",
+                                            "multiprocessing_1"),
+                                           ("Mandelbrot_Multiprocessing_2",
+                                            "multiprocessing_2"),
+                                           ("Mandelbrot_Multiprocessing_4",
+                                            "multiprocessing_4"),
+                                           ("Mandelbrot_Multiprocessing_8",
+                                            "multiprocessing_8"),
+                                           ("Mandelbrot_Multiprocessing_16",
+                                            "multiprocessing_16"),
+                                           ("Mandelbrot_Dask_1", "dask_1"),
+                                           ("Mandelbrot_Dask_2", "dask_2"),
+                                           ("Mandelbrot_Dask_4", "dask_4"),
+                                           ("Mandelbrot_Dask_8", "dask_8"),
+                                           ("Mandelbrot_Dask_16", "dask_16"),
+                                           ("Mandelbrot_GPU", "GPU"),
+                                           ("Mandelbrot_Cython_naive",
+                                            "cython_naive"),
+                                           ("Mandelbrot_Cython_vector",
+                                            "cython_vector")])
+@pytest.mark.parametrize("res", [100, 500, 1000, 2000, 5000])
+def test_mandelbrot_z_compare(title, folder, res):
+    # Load naive
+    _, mfractal_naive, z_naive = _load("naive", "Mandelbrot_Naive", res)
+
+    # Load other
+    _, mfractal_compare, z_compare = _load(folder, title, res)
+
+    # Check if they are equal
     assert (z_naive == z_compare).all()
