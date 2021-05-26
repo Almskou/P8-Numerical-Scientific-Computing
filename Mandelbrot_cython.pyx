@@ -3,6 +3,8 @@ Mini project for the course Numerical Scientific Computing
 
 Functions which are going to be compiled to c
 
+Build with: python setup.py build_ext --inplace
+
 @author: 871
 """
 
@@ -17,18 +19,18 @@ def naive(complex c, int T, int I):
         z = z**2 + c
         
         if np.abs(z) > T:
-            return i
+            return i, z
         
-    return 100
+    return 100,z
 
 
 def vector(c, int T, int I):  
     z = np.zeros(c.shape, dtype=complex)
     Iota = np.full(z.shape, I)
 
-    for i in range(1, I+1):
+    for i in range(1, I):
         z[Iota > (i-1)] = np.square(z[Iota > (i-1)]) + c[Iota > (i-1)]   # Only calculated for the ones which hasn't diverged 
         
         Iota[np.logical_and(np.abs(z) > T, Iota == I)] = i # Write iteration number to the matrix 
 
-    return Iota
+    return Iota, z

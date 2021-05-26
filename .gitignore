@@ -3,5 +3,10 @@
 # Folders
 __pycache__
 dask-worker-space
-data
 build
+.pylint.d
+
+# Files
+*?5000.hdf5
+*.h5
+*.npy
