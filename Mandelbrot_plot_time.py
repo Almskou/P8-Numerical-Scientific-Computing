@@ -34,6 +34,8 @@ def _load(directory, title, res):
         time it took to run the method
     mfractal : int
         the values from the method
+    z : complex
+        output z
 
     """
     with h5py.File(f"data/{directory}/{title}_{res}.hdf5", 'r') as hf:
@@ -162,7 +164,7 @@ def _plot_time(t, res):
 # %% Main
 if __name__ == '__main__':
     # Constants - Resolution
-    res = [100, 500, 1000, 2000]
+    res = [100, 500, 1000, 2000, 5000]
 
     # Load
     title = ["Mandelbrot_Naive", "Mandelbrot_Numba",
@@ -189,4 +191,4 @@ if __name__ == '__main__':
             else:
                 t[j].append(t_output)
 
-   # _plot_time(t, res)
+    _plot_time(t, res)

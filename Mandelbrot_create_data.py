@@ -28,6 +28,8 @@ def _save(mfractal, z, t, directory, title, res):
     ----------
     mfractal : matrix
         matrix with values from the mandelbrot methods
+    z : complex matrix
+        output z
     t : float
         time it took to run the method
     directory : string

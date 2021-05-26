@@ -44,7 +44,8 @@ def naive(lim, res_re, res_im, threshold, iterations):
     -------
     mfractal : matrix
         A matrix with the mandelbrot values (number iterations).
-
+    z : complex matrix
+        output z
     """
     x_min, x_max, y_min, y_max = lim
     # Form the complex grid
@@ -86,7 +87,8 @@ def numpy(lim, res_re, res_im, threshold, iterations):
     -------
     mfractal : matrix
         A matrix with the mandelbrot values (number iterations).
-
+    z : complex matrix
+        output z
     """
     x_min, x_max, y_min, y_max = lim
     # Form the complex grid
@@ -127,7 +129,8 @@ def numba(lim, res_re, res_im, threshold, iterations):
     -------
     mfractal : matrix
         A matrix with the mandelbrot values (number iterations).
-
+    z : complex matrix
+        output z
     """
     x_min, x_max, y_min, y_max = lim
     # Form the complex grid
@@ -173,7 +176,8 @@ def multiprocessing(lim, res_re, res_im, threshold, iterations, p):
     -------
     result : matrix
         A matrix with the mandelbrot values (number iterations).
-
+    z : complex matrix
+        output z
     """
     x_min, x_max, y_min, y_max = lim
     # Form the complex grid
@@ -226,7 +230,8 @@ def dask(lim, res_re, res_im, threshold, iterations, p):
     -------
     mfractal : matrix
         A matrix with the mandelbrot values (number iterations).
-
+    z : complex matrix
+        output z
     """
     x_min, x_max, y_min, y_max = lim
     # Form the complex grid
@@ -280,7 +285,8 @@ def GPU(lim, res_re, res_im, threshold, iterations):
     -------
     mfractal : matrix
         A matrix with the mandelbrot values (number iterations).
-
+    z : complex matrix
+        output z
     """
     x_min, x_max, y_min, y_max = lim
 
@@ -322,7 +328,8 @@ def cython_vector(lim, res_re, res_im, threshold, iterations):
     -------
     mfractal : matrix
         A matrix with the mandelbrot values (number iterations).
-
+    z : complex matrix
+        output z
     """
     x_min, x_max, y_min, y_max = lim
 
@@ -361,7 +368,8 @@ def cython_naive(lim, res_re, res_im, threshold, iterations):
     -------
     mfractal : matrix
         A matrix with the mandelbrot values (number iterations).
-
+    z : complex matrix
+        output z
     """
     x_min, x_max, y_min, y_max = lim
     # Form the complex grid
@@ -403,6 +411,8 @@ def _mpoint_numpy(c, T, Iter):
     -------
     Iota : int
         Number of iterations.
+    z : complex matrix
+        output z
     """
     z = np.zeros(c.shape, dtype=complex)
     Iota = np.full(z.shape, Iter)
@@ -435,6 +445,8 @@ def _mpoint_naive(c, T=2, Iter=100):
     -------
     Iota : int
         Number of iterations.
+    z : complex
+        output z
     """
     z = 0
     for i in range(1, Iter):
@@ -463,6 +475,8 @@ def _mpoint_numba(c, T=2, Iter=100):
     -------
     Iota : int
         Number of iterations.
+    z : complex
+        output z
     """
     z = 0
     for i in range(1, Iter):
@@ -491,6 +505,8 @@ def _mpoint_opencl(c, T=2, Iter=100):
     -------
     Iota : int
         Number of iterations.
+    z : complex matrix
+        output z
     """
     ctx = cl.create_some_context()
     queue = cl.CommandQueue(ctx)

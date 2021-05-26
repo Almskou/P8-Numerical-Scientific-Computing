@@ -34,6 +34,8 @@ def _load(directory, title, res):
         time it took to run the method
     mfractal : int
         the values from the method
+    z : complex
+        output z
 
     """
     with h5py.File(f"data/{directory}/{title}_{res}.hdf5", 'r') as hf:
