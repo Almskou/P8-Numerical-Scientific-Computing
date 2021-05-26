@@ -7,18 +7,18 @@ All the different mandelbrot functions
 @author: 871
 """
 # %% Imports
-import Mandelbrot_cython
-
-import numpy as np
-
 from functools import partial
 import multiprocessing as mp
 
-from dask.distributed import Client, wait
+import numpy as np
+
+from dask.distributed import Client
 
 import pyopencl as cl
 
 from numba import jit
+
+import Mandelbrot_cython
 
 # %% Mandelbrot Naive
 

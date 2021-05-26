@@ -72,7 +72,7 @@ def _plot(mfractal, lim, directory, title, res):
     x_min, x_max, y_min, y_max = lim
 
     # Make plot and save figure
-    plt.imshow(np.log(mfractal), cmap=plt.cm.hot,
+    plt.imshow(np.log(mfractal), cmap="hot",
                extent=[x_min, x_max, y_min, y_max])
     plt.title(f"{title}_{res}")
     plt.xlabel('Re[c]')

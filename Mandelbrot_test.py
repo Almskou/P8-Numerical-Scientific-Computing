@@ -68,11 +68,28 @@ def _load(directory, title, res):
                                             "cython_vector")])
 @pytest.mark.parametrize("res", [100, 500, 1000, 2000, 5000])
 def test_mandelbrot_mfractal_compare(title, folder, res):
+    """
+    Test the mandelbrot fractals against naive implementation
+
+    Parameters
+    ----------
+    title : str
+        title of the data.
+    folder : str
+        folder name to the data inside the data folder.
+    res : int
+        resolution.
+
+    Returns
+    -------
+    None.
+
+    """
     # Load naive
-    _, mfractal_naive, z_naive = _load("naive", "Mandelbrot_Naive", res)
+    _, mfractal_naive, _ = _load("naive", "Mandelbrot_Naive", res)
 
     # Load other
-    _, mfractal_compare, z_compare = _load(folder, title, res)
+    _, mfractal_compare, _ = _load(folder, title, res)
     # Check if they are equal
 
     assert (mfractal_naive == mfractal_compare).all()
@@ -102,11 +119,28 @@ def test_mandelbrot_mfractal_compare(title, folder, res):
                                             "cython_vector")])
 @pytest.mark.parametrize("res", [100, 500, 1000, 2000, 5000])
 def test_mandelbrot_z_compare(title, folder, res):
+    """
+    Test the z values against naive implementation
+
+    Parameters
+    ----------
+    title : str
+        title of the data.
+    folder : str
+        folder name to the data inside the data folder.
+    res : int
+        resolution.
+
+    Returns
+    -------
+    None.
+
+    """
     # Load naive
-    _, mfractal_naive, z_naive = _load("naive", "Mandelbrot_Naive", res)
+    _, _, z_naive = _load("naive", "Mandelbrot_Naive", res)
 
     # Load other
-    _, mfractal_compare, z_compare = _load(folder, title, res)
+    _, _, z_compare = _load(folder, title, res)
 
     # Check if they are equal
     assert (z_naive == z_compare).all()

@@ -10,11 +10,11 @@ Run all the different mandelbrots method and saves the values in a data folder
 # %% Imports
 from timeit import default_timer as timer
 
-import Mandelbrot_functions as mb
-
 from os import path, makedirs
 
 import h5py
+
+import Mandelbrot_functions as mb
 
 # %% save
 
@@ -73,7 +73,7 @@ def _run(directory, title, res):
     if not path.isdir(f"data/{directory}"):
         makedirs(f"data/{directory}")
 
-    if path.isfile(f"data/{directory}/{title}_{res}.h5"):
+    if path.isfile(f"data/{directory}/{title}_{res}.hdf5"):
         return False
     else:
         return True

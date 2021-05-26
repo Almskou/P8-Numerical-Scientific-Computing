@@ -4,6 +4,7 @@
 __pycache__
 dask-worker-space
 build
+.pylint.d
 
 # Files
 *?5000.hdf5

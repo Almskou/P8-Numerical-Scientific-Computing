@@ -8,11 +8,11 @@ Loads all the created files and plot the time plot
 """
 
 # %% Imports
+from os import path, makedirs
+
 import matplotlib.pyplot as plt
 
 import h5py
-
-from os import path, makedirs
 
 # %% load
 
@@ -162,7 +162,7 @@ def _plot_time(t, res):
 # %% Main
 if __name__ == '__main__':
     # Constants - Resolution
-    res = [100, 500, 1000, 2000, 5000]
+    res = [100, 500, 1000, 2000]
 
     # Load
     title = ["Mandelbrot_Naive", "Mandelbrot_Numba",
@@ -189,4 +189,4 @@ if __name__ == '__main__':
             else:
                 t[j].append(t_output)
 
-    _plot_time(t, res)
+   # _plot_time(t, res)
